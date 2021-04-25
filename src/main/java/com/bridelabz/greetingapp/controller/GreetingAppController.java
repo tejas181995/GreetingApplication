@@ -32,9 +32,9 @@ public class GreetingAppController {
 	public ResponseEntity<GreetingApp> getGreetingById(@PathVariable long id){
 		return new ResponseEntity<>(greetingAppService.getGreetingById(id), HttpStatus.OK );
 	}
-	@PutMapping("/GreetMsg_put")
-	public ResponseEntity<GreetingApp> putGreeting(@RequestParam(value = "name", defaultValue = "unidentified") String name){
-		return new ResponseEntity<>(greetingAppService.putGreeting(name), HttpStatus.ACCEPTED);
+	@PutMapping("/GreetMsg_put/{id}")
+	public ResponseEntity<GreetingApp> putGreeting(@RequestParam(value = "msg", defaultValue = "not provided") String msg, @PathVariable Long id){
+		return new ResponseEntity<>(greetingAppService.putGreeting(msg, id), HttpStatus.ACCEPTED);
 	}
 	@PostMapping("/GreetMsg_post")
 	public ResponseEntity<GreetingApp> postGreeting(@RequestParam(value="firstName") Optional<String> firstName, 

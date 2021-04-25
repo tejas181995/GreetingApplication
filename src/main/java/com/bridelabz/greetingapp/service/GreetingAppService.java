@@ -1,6 +1,7 @@
 package com.bridelabz.greetingapp.service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +30,10 @@ public class GreetingAppService implements IGreetingAppService {
 	}
 
 	@Override
-	public GreetingApp putGreeting(String name) {
-		return new GreetingApp(String.format(template, name), counter.incrementAndGet());
+	public GreetingApp putGreeting(String msg, long id) {
+		Optional<GreetingApp> greetApp = greetingRepo.findById(id);
+		greetApp.get().setMessage(msg);
+		return greetingRepo.save(greetApp.get());
 	}
 
 	@Override

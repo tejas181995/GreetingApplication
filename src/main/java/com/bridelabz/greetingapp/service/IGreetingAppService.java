@@ -7,6 +7,6 @@ import com.bridelabz.greetingapp.model.GreetingApp;
 public interface IGreetingAppService {
 		List<GreetingApp> getGreeting();
 		public GreetingApp getGreetingById(Long id);
-		public GreetingApp putGreeting(String name);
+		public GreetingApp putGreeting(String message, long id);
 		public GreetingApp postGreeting(String name);
 }
