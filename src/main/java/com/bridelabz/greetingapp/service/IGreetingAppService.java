@@ -9,4 +9,5 @@ public interface IGreetingAppService {
 		public GreetingApp getGreetingById(Long id);
 		public GreetingApp putGreeting(String message, long id);
 		public GreetingApp postGreeting(String name);
+		public GreetingApp deleteGreeting(long id);
 }

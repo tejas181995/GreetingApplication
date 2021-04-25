@@ -42,6 +42,11 @@ public class GreetingAppService implements IGreetingAppService {
 		return greetingRepo.save(greetingApp);	
 	 
 	}
+	public GreetingApp deleteGreeting(long id) {
+		GreetingApp greetingApp = this.getGreetingById(id);
+		greetingRepo.deleteById(id);
+		return greetingApp;
+	}
 
 	
 }

@@ -48,6 +48,9 @@ public class GreetingAppController {
 			name = "Hello World";
 		return new ResponseEntity<>(greetingAppService.postGreeting(name), HttpStatus.CREATED);
 	}
-	
+	@DeleteMapping("/greeting_delete/{id}")
+	public ResponseEntity<GreetingApp> deleteGreeting(@PathVariable long id){
+		return new ResponseEntity<>(greetingAppService.deleteGreeting(id), HttpStatus.ACCEPTED);
+	}
 }
 
