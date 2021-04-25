@@ -1,32 +1,34 @@
 package com.bridelabz.greetingapp.controller;
 
-import java.util.concurrent.atomic.AtomicLong;
-
-
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bridelabz.greetingapp.model.GreetingApp;
+import com.bridelabz.greetingapp.service.IGreetingAppService;
 
 @RestController
+@RequestMapping("/")
 public class GreetingAppController {
-	private static final String template = "Hello, %s!";
-	private static AtomicLong counter = new  AtomicLong();
+	@Autowired
+	private IGreetingAppService greetingAppService;
 	
 	@GetMapping("/GreetMsg_get")
-	public GreetingApp getGreetingApp(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return new GreetingApp(String.format(template,name), counter.incrementAndGet());
+	public ResponseEntity<GreetingApp> getGreeting(@RequestParam(value = "name", defaultValue = "World") String name){
+		return new ResponseEntity<>(greetingAppService.getGreeting(name), HttpStatus.OK);
 	}
 	@PutMapping("/GreetMsg_put")
-	public GreetingApp putGreetingApp(@RequestParam(value = "name", defaultValue = "World") String name) {
-		return new GreetingApp(String.format(template, name), counter.incrementAndGet());
+	public ResponseEntity<GreetingApp> putGreeting(@RequestParam(value = "name", defaultValue = "World") String name){
+		return new ResponseEntity<>(greetingAppService.getGreeting(name), HttpStatus.ACCEPTED);
 	}
 	@PostMapping("/GreetMsg_post")
-	public GreetingApp postGreetingApp(@RequestParam(value="name", defaultValue = "World") String name) {
-		return new GreetingApp(String.format(template, name), counter.incrementAndGet());
+	public ResponseEntity<GreetingApp> postGreeting(@RequestParam(value = "name", defaultValue = "World") String name){
+		return new ResponseEntity<>(greetingAppService.getGreeting(name), HttpStatus.CREATED);
 	}
 }
