@@ -1,11 +1,14 @@
 package com.bridelabz.greetingapp.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +25,19 @@ public class GreetingAppController {
 	private IGreetingAppService greetingAppService;
 	
 	@GetMapping("/GreetMsg_get")
-	public ResponseEntity<GreetingApp> getGreeting(@RequestParam(value="firstName") Optional<String> firstName, 
+	public ResponseEntity<List<GreetingApp>> getGreeting(){
+		return new ResponseEntity<>(greetingAppService.getGreeting(), HttpStatus.OK);
+	}
+	@GetMapping("/GreetMsg_get/{id}")
+	public ResponseEntity<GreetingApp> getGreetingById(@PathVariable long id){
+		return new ResponseEntity<>(greetingAppService.getGreetingById(id), HttpStatus.OK );
+	}
+	@PutMapping("/GreetMsg_put/{id}")
+	public ResponseEntity<GreetingApp> putGreeting(@RequestParam(value = "msg", defaultValue = "not provided") String msg, @PathVariable long id){
+		return new ResponseEntity<>(greetingAppService.putGreeting(msg, id), HttpStatus.ACCEPTED);
+	}
+	@PostMapping("/GreetMsg_post")
+	public ResponseEntity<GreetingApp> postGreeting(@RequestParam(value="firstName") Optional<String> firstName, 
 			@RequestParam(value="lastName") Optional<String> lastName){
 		String name = "";
 		if(firstName.isPresent())
@@ -31,14 +46,11 @@ public class GreetingAppController {
 			name += " " + lastName.get();
 		if(name.length() == 0)
 			name = "Hello World";
-		return new ResponseEntity<>(greetingAppService.getGreeting(name), HttpStatus.OK);
+		return new ResponseEntity<>(greetingAppService.postGreeting(name), HttpStatus.CREATED);
 	}
-	@PutMapping("/GreetMsg_put")
-	public ResponseEntity<GreetingApp> putGreeting(@RequestParam(value = "name", defaultValue = "World") String name){
-		return new ResponseEntity<>(greetingAppService.getGreeting(name), HttpStatus.ACCEPTED);
-	}
-	@PostMapping("/GreetMsg_post")
-	public ResponseEntity<GreetingApp> postGreeting(@RequestParam(value = "name", defaultValue = "World") String name){
-		return new ResponseEntity<>(greetingAppService.getGreeting(name), HttpStatus.CREATED);
+	@DeleteMapping("/GreetMsg/{id}")
+	public ResponseEntity<GreetingApp> deleteGreeting(@PathVariable long id){
+		return new ResponseEntity<>(greetingAppService.deleteGreeting(id), HttpStatus.ACCEPTED);
 	}
 }
+
