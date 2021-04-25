@@ -1,7 +1,6 @@
 package com.bridelabz.greetingapp.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class GreetingAppService implements IGreetingAppService {
 	
 	@Autowired
 	private IGreetingAppRepositary greetingRepo;
-	
+
 	@Override
 	public List<GreetingApp> getGreeting() {
 		return greetingRepo.findAll();
@@ -30,22 +29,16 @@ public class GreetingAppService implements IGreetingAppService {
 	}
 
 	@Override
-	public GreetingApp putGreeting(String greetingMessage, Long id) {
-		Optional<GreetingApp> greetingApp = greetingRepo.findById(id);
-		greetingApp.get().setMessage(greetingMessage);
-		return greetingRepo.save(greetingApp.get());
+	public GreetingApp putGreeting(String name) {
+		return new GreetingApp(String.format(template, name), counter.incrementAndGet());
 	}
 
 	@Override
 	public GreetingApp postGreeting(String name) {
 		GreetingApp greetingApp = new GreetingApp(String.format(template, name), counter.incrementAndGet()); 
-		return greetingRepo.save(greetingApp);
+		return greetingRepo.save(greetingApp);	
+	 
 	}
 
-	@Override
-	public GreetingApp deleteGreeting(Long id) {
-		GreetingApp greetingApp = this.getGreetingById(id);
-		greetingRepo.deleteById(id);
-		return greetingApp;
-	}
+	
 }
